@@ -46,21 +46,21 @@
 
   })();
 
-  client = new Client("Coyote", "1 Road Runner rd.", "Address Line 2", "416-123-4567");
+  client = JSON.parse(localStorage.getItem('invoiceClient')) || new Client("Coyote", "1 Road Runner rd.", "Address Line 2", "416-123-4567");
 
-  company = new Company("Company Name", "Company Address line 1\nCompany Address Line 2\nCity, State, Zip", "416-000-0000");
+  company = JSON.parse(localStorage.getItem('invoiceCompany')) || new Company("Company Name", "Company Address line 1\nCompany Address Line 2\nCity, State, Zip", "416-000-0000");
 
   window.Invoice = angular.module('Invoice', []);
 
   window.Invoice.controller('InvoiceCtrl', function($scope) {
-    $scope.items = [new Item(1, "Acme Bird Seed", 13.25)];
+    $scope.items = JSON.parse(localStorage.getItem('invoiceItems')) || [new Item(1, "Acme Bird Seed", 13.25)];
     $scope.autoincrement = 0;
     $scope.company = company;
     $scope.client = client;
     $scope.date = new Date().toLocaleDateString();
     $scope.number = (Math.random() * 100).toFixed(0);
     $scope.freight = 0;
-    $scope.fields = [];
+    $scope.fields = JSON.parse(localStorage.getItem('invoiceFields')) || [];
     $scope.addField = function() {
       return $scope.fields.push({
         name: '',
@@ -75,6 +75,7 @@
       item = new Item('', '', '');
       item.id = $scope.autoincrement;
       $scope.items.push(item);
+      $scope.itemsObject.items.push(item);
       return ++$scope.autoincrement;
     };
     $scope.removeItem = function(id) {
@@ -106,11 +107,19 @@
     $scope.subtotal = $scope.updateSubtotal();
     $scope.$watch('items', function() {
       $scope.subtotal = $scope.updateSubtotal();
-      return $scope.total = $scope.updateTotal();
+      $scope.total = $scope.updateTotal();
+      return localStorage.invoiceItems = JSON.stringify($scope.items);
     }, true);
     $scope.$watch('fields', function() {
-      return $scope.total = $scope.updateTotal();
+      $scope.total = $scope.updateTotal();
+      return localStorage.invoiceFields = JSON.stringify($scope.fields);
     }, true);
+    $scope.$watch('company', function() {
+      return localStorage.invoiceCompany = JSON.stringify($scope.company);
+    });
+    $scope.$watch('client', function() {
+      return localStorage.invoiceClient = JSON.stringify($scope.client);
+    });
     $scope.parseFields = function() {
       var field, v, _i, _len, _ref, _results;
 

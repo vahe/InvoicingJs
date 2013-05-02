@@ -91,7 +91,7 @@
 			<tr class="item-row" rowspan="5" ng-repeat="item in items" data-id="{{item.id}}">
 				<td><input type="text" class="width-100" ng-model="item.qty"></td>
 				<td><input type="text" class="width-100" ng-model="item.description"></td>
-				<td style="min-width:80px;"><input type="text" class="fivesixth" ng-model="item.unit_price"></td>
+				<td id="unit-price"><input type="text" class="fivesixth" ng-model="item.unit_price"></td>
 				<td style="min-width:90px;" ng-cloak>{{item.qty * item.unit_price | currency}}</td>
 			</tr>
 			</tbody>

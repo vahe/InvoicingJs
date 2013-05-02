@@ -16,35 +16,37 @@ class Company
 	constructor: (@name, @address, @phone) ->
 
 
-client = new Client("Coyote", "1 Road Runner rd.", "Address Line 2", "416-123-4567")
-company = new Company("Company Name", "Company Address line 1\nCompany Address Line 2\nCity, State, Zip", "416-000-0000")
+client = JSON.parse(localStorage.getItem('invoiceClient')) || new Client("Coyote", "1 Road Runner rd.", "Address Line 2", "416-123-4567")
+company = JSON.parse(localStorage.getItem('invoiceCompany')) || new Company("Company Name", "Company Address line 1\nCompany Address Line 2\nCity, State, Zip", "416-000-0000")
 
 
 window.Invoice = angular.module('Invoice', [])
 
-
 window.Invoice.controller 'InvoiceCtrl', ($scope) ->
-	$scope.items = [new Item(1, "Acme Bird Seed", 13.25)]
 
+
+	# $scope.itemsObject = {}
+	# $scope.itemsObject.items = []
+
+	$scope.items = JSON.parse(localStorage.getItem('invoiceItems')) || [new Item(1, "Acme Bird Seed", 13.25)]
 	$scope.autoincrement = 0
 	$scope.company = company
 	$scope.client = client
 	$scope.date = new Date().toLocaleDateString()
 	$scope.number = (Math.random()*100).toFixed(0)
 	$scope.freight = 0
-	$scope.fields = []
+	$scope.fields = JSON.parse(localStorage.getItem('invoiceFields')) || []
 	
 
 	$scope.addField = ->
-			$scope.fields.push ({name: '', value: '',  symbol: '', css:'dontPrint'})
-
+		$scope.fields.push ({name: '', value: '',  symbol: '', css:'dontPrint'})
 
 	$scope.addItem = ->
 		item = new Item('','','')
 		item.id = $scope.autoincrement
 		$scope.items.push(item)
+		$scope.itemsObject.items.push item
 		++$scope.autoincrement
-
 
 	$scope.removeItem = (id) ->
 		i = 0
@@ -65,15 +67,25 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 	$scope.$watch 'items', ->
 		$scope.subtotal = $scope.updateSubtotal()
 		$scope.total = $scope.updateTotal()
+		localStorage.invoiceItems = JSON.stringify($scope.items)
 	, true
 
 	$scope.$watch 'fields', ->
 		$scope.total = $scope.updateTotal()
+		localStorage.invoiceFields = JSON.stringify($scope.fields)
 	, true
+
+	$scope.$watch 'company', ->
+		localStorage.invoiceCompany = JSON.stringify($scope.company)
+
+	$scope.$watch 'client', ->
+		localStorage.invoiceClient = JSON.stringify($scope.client)
+
 
 	$scope.parseFields = ->
 		for field in $scope.fields
 			v = field.value		
+			
 			if v == ''
 				field.css = 'dontPrint'
 			else field.css = ''
