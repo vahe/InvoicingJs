@@ -1,7 +1,6 @@
 class Item
-	constructor: (@qty, @description, @unit_price, invoice) ->
+	constructor: (@qty, @description, @unit_price, @css, @id) ->
 		@amount = parseFloat(this.round(@qty * @unit_price))
-		@id
 
 	round: (amount) ->
 		amount.toFixed(2)
@@ -28,8 +27,8 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 	# $scope.itemsObject = {}
 	# $scope.itemsObject.items = []
 
-	$scope.items = JSON.parse(localStorage.getItem('invoiceItems')) || [new Item(1, "Acme Bird Seed", 13.25)]
-	$scope.autoincrement = 0
+	$scope.items = JSON.parse(localStorage.getItem('invoiceItems')) || [new Item(1, "Acme Bird Seed", 13.25, '', 0)]
+	$scope.autoincrement = parseInt(localStorage.getItem('autoincrement'))
 	$scope.company = company
 	$scope.client = client
 	$scope.date = new Date().toLocaleDateString()
@@ -42,23 +41,31 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 		$scope.fields.push ({name: '', value: '',  symbol: '', css:'dontPrint'})
 
 	$scope.addItem = ->
-		item = new Item('','','')
+		item = new Item('','','','dontPrint')
 		item.id = $scope.autoincrement
 		$scope.items.push(item)
 		$scope.itemsObject.items.push item
 		++$scope.autoincrement
+		localStorage.autoincrement = $scope.autoincrement
 
-	$scope.removeItem = (id) ->
-		i = 0
-		for item in $scope.items
-			if item.id == id
-				$scope.items.splice(i,1)
-				return
-			else ++i
+	$scope.removeItem = (item) ->		
+		i = $scope.items.indexOf(item)
+		if i != -1
+			$scope.items.splice(i,1)
+
+
+	$scope.removeField = (field) ->		
+		i = $scope.fields.indexOf(field)
+		console.log i
+		if i != -1
+			$scope.fields.splice(i,1)
 
 	$scope.updateSubtotal = ->
 		sum = 0
 		for item in $scope.items
+			if item.qty == '0' || item.qty == ''
+				item.css = 'dontPrint'
+			else item.css = ''
 			sum += parseFloat(item.qty * item.unit_price)
 		return sum
 

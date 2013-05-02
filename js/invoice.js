@@ -3,12 +3,13 @@
   var Client, Company, Item, client, company;
 
   Item = (function() {
-    function Item(qty, description, unit_price, invoice) {
+    function Item(qty, description, unit_price, css, id) {
       this.qty = qty;
       this.description = description;
       this.unit_price = unit_price;
+      this.css = css;
+      this.id = id;
       this.amount = parseFloat(this.round(this.qty * this.unit_price));
-      this.id;
     }
 
     Item.prototype.round = function(amount) {
@@ -53,8 +54,8 @@
   window.Invoice = angular.module('Invoice', []);
 
   window.Invoice.controller('InvoiceCtrl', function($scope) {
-    $scope.items = JSON.parse(localStorage.getItem('invoiceItems')) || [new Item(1, "Acme Bird Seed", 13.25)];
-    $scope.autoincrement = 0;
+    $scope.items = JSON.parse(localStorage.getItem('invoiceItems')) || [new Item(1, "Acme Bird Seed", 13.25, '', 0)];
+    $scope.autoincrement = parseInt(localStorage.getItem('autoincrement'));
     $scope.company = company;
     $scope.client = client;
     $scope.date = new Date().toLocaleDateString();
@@ -72,25 +73,28 @@
     $scope.addItem = function() {
       var item;
 
-      item = new Item('', '', '');
+      item = new Item('', '', '', 'dontPrint');
       item.id = $scope.autoincrement;
       $scope.items.push(item);
       $scope.itemsObject.items.push(item);
-      return ++$scope.autoincrement;
+      ++$scope.autoincrement;
+      return localStorage.autoincrement = $scope.autoincrement;
     };
-    $scope.removeItem = function(id) {
-      var i, item, _i, _len, _ref;
+    $scope.removeItem = function(item) {
+      var i;
 
-      i = 0;
-      _ref = $scope.items;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
-        if (item.id === id) {
-          $scope.items.splice(i, 1);
-          return;
-        } else {
-          ++i;
-        }
+      i = $scope.items.indexOf(item);
+      if (i !== -1) {
+        return $scope.items.splice(i, 1);
+      }
+    };
+    $scope.removeField = function(field) {
+      var i;
+
+      i = $scope.fields.indexOf(field);
+      console.log(i);
+      if (i !== -1) {
+        return $scope.fields.splice(i, 1);
       }
     };
     $scope.updateSubtotal = function() {
@@ -100,6 +104,11 @@
       _ref = $scope.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
+        if (item.qty === '0' || item.qty === '') {
+          item.css = 'dontPrint';
+        } else {
+          item.css = '';
+        }
         sum += parseFloat(item.qty * item.unit_price);
       }
       return sum;

@@ -89,15 +89,17 @@
 			<!-- TABLE ITEMS -->
 			<tbody>
 			<tr class="item-row" rowspan="5" ng-repeat="item in items" data-id="{{item.id}}">
-				<td><input type="text" class="width-100" ng-model="item.qty"></td>
-				<td><input type="text" class="width-100" ng-model="item.description"></td>
-				<td id="unit-price"><input type="text" class="fivesixth" ng-model="item.unit_price"></td>
-				<td style="min-width:90px;" ng-cloak>{{item.qty * item.unit_price | currency}}</td>
+				<td class="{{item.css}}"><input type="text" class="width-100" ng-model="item.qty"></td>
+				<td class="{{item.css}}"><input type="text" class="width-100" ng-model="item.description"></td>
+				<td class="{{item.css}}" id="unit-price"><input type="text" class="fivesixth" ng-model="item.unit_price"></td>
+				<td class="{{item.css}}" id="amount" ng-cloak>{{item.qty * item.unit_price | currency}}</td>
+				<td class="dontPrint delete"><a href='' ng-click="removeItem(item)">X</a></td>
+
 			</tr>
 			</tbody>
 			<!-- TABLE FOOTER END -->
 
-
+			
 			<!-- TABLE FOOTER -->
 			<tfoot>
 			<tr id="subtotal">
@@ -117,6 +119,7 @@
 			<tr class="field-row" ng-repeat="field in fields">
 				<td class="{{field.css}}"><input type="text" ng-model="field.name"></td>
 				<td class="{{field.css}}"><input type="text" ng-model="field.value"></td>
+				<td class="dontPrint delete"><a href='' ng-click="removeField(field)">X</a></td>
 			</tr>
 
 			<tr>
