@@ -84,10 +84,11 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 
 	$scope.$watch 'company', ->
 		localStorage.invoiceCompany = JSON.stringify($scope.company)
+	, true
 
 	$scope.$watch 'client', ->
 		localStorage.invoiceClient = JSON.stringify($scope.client)
-
+	, true
 
 	$scope.parseFields = ->
 		for field in $scope.fields

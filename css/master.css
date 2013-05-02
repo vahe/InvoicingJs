@@ -106,15 +106,6 @@ body {
 }
 
 
-#invoice.data #unit-price {
-	min-width:80px;
-}
-
-#invoice.data #amount {
-	min-width:90px;
-}
-
-
 #invoice input[type="text"]:hover, #invoice #company-address:hover {
 	background-color: LightYellow;
 }

@@ -125,10 +125,10 @@
     }, true);
     $scope.$watch('company', function() {
       return localStorage.invoiceCompany = JSON.stringify($scope.company);
-    });
+    }, true);
     $scope.$watch('client', function() {
       return localStorage.invoiceClient = JSON.stringify($scope.client);
-    });
+    }, true);
     $scope.parseFields = function() {
       var field, v, _i, _len, _ref, _results;
 
