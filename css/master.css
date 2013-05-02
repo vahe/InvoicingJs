@@ -1,0 +1,125 @@
+/* =Typography
+-----------------------------------------------------------------------------*/
+body {
+	margin-top:20px;
+
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none;
+}
+
+/* =Links
+-----------------------------------------------------------------------------*/
+
+
+
+/* =Forms
+-----------------------------------------------------------------------------*/
+
+
+#invoice {
+	margin-left:5%;
+	margin-right:5%;
+}
+
+#invoice input[type="text"], #invoice #company-address {
+	border: none;
+	outline:none;
+	box-shadow: none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+	-o-box-shadow:none;
+	background: transparent;
+	font-size:13px;
+
+}
+
+#invoice-header #company-address{
+	height:70px;
+}
+
+#invoice-data tfoot .addFields {
+	float:right;
+	padding:0 5px;
+	margin-right:10px;
+}
+
+
+#invoice-data tfoot tr td{
+	padding: 0.75em 0;
+}
+
+#invoice-data tfoot tr td.spaced{
+	padding: 0.75em 0.5em;
+
+}
+
+#invoice-data tfoot tr td input{
+	margin:0;
+	width:100%;
+	padding:0.5em;
+}
+
+#invoice-header #company-name{
+	font-size:34px;
+	line-height:40px;
+	height:60px;
+	width:100%;
+}
+
+
+#invoice input[type="text"]:hover, #invoice #company-address:hover {
+	background-color: LightYellow;
+}
+
+#invoice input[type="text"]:focus, #invoice #company-address:focus {
+	background-color: Cornsilk;
+}
+
+.forms.columnar ul li {
+	margin: 5px 10px;
+}
+
+#invoice-to input[type="text"] {
+	font-weight: bold;
+}
+
+#invoice .forms.columnar label {
+	width:100px;
+}
+
+
+#invoice form tr td {
+	vertical-align: middle;
+}
+
+@media print {
+	.dontPrint{
+		display:none;
+	}
+
+	.fillPrint{
+		margin-left:0 !important;
+		margin-right:0 !important;
+	}
+}
+/* =Layout
+-----------------------------------------------------------------------------*/
+
+
+
+/* =Header
+-----------------------------------------------------------------------------*/
+
+
+/* =Nav
+-----------------------------------------------------------------------------*/
+
+
+/* =Misc
+-----------------------------------------------------------------------------*/
+
+
+/* =Footer
+-----------------------------------------------------------------------------*/

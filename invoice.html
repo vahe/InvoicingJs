@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" ng-app="Invoice">
+<head>
+	<meta charset="UTF-8">
+	<title>Invoicing</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" type="text/css" href="css/kube.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/master.css" />
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body ng-controller="InvoiceCtrl">
+
+<section id="invoice" class="fillPrint">
+	
+	<div class="">
+	<section id="invoice-header" class="row">
+		<div class="threefifth">
+			<div class="row">
+				<div class="push-sixth">
+					<input type="text" id="company-name" name="company-name" ng-model="company.name">
+					<section id="top-contact-info">
+						<textarea name="company-address" id="company-address" cols="40" rows="10" ng-model="company.address"></textarea>
+					</section>
+					<input type="text" id="company-phone" name="company-phone" ng-model="company.phone">
+
+				</div>		
+			</div>
+		</div>
+	</section>
+	</div>
+
+	<div class="forms columnar row">
+		<section class="threefifth" id="invoice-to">
+			<h5 class="uppercase push-sixth">Invoice To:</h5>
+			<ul>
+	            <li> 
+	                <label for="invoice-to-name">Name</label>
+	                <input type="text" class="width-50" name="invoice-to-name" id="invoice-to-name" ng-model="client.name" />
+	            </li>
+	            <li>
+	                <label for="invoice-to-address">Address</label>
+	                <input type="text" class="width-50" name="invoice-to-address" id="invoice-to-address" ng-model="client.address"/>
+	            </li>
+	            <li>
+	                <label for="invoice-to-city-state-zip">City, State, Zip</label>
+	                <input type="text" class="width-50" name="invoice-to-city-state-zip" ng-model="client.city_state_zip" />
+	            </li>
+	            <li>
+	                <label for="invoice-to-phone">Phone</label>
+	                <input type="text" class="width-50" name="invoice-to-phone" ng-model="client.phone" />
+	            </li>
+	        </ul>
+		</section>
+
+		<section class="twofifth" id="invoice-info">
+			<ul>
+	            <li>
+	                <label for="invoice-date">Inovice Date</label>
+	                <input type="text" name="invoice-date" id="invoice-date" ng-model="date" />
+	            </li>
+	            <li>
+	                <label for="invoice-number">Invoice Number</label>
+	                <input type="text" name="invoice-number" ng-model="number" />
+	            </li>
+	        </ul>
+    	</section>	
+    </div>
+
+
+	<section id="invoice-data">
+		<table border="0" class="width-100 bordered">
+			
+			<!-- TABLE HEADER -->
+			<thead class="thead-gray">
+			<tr>
+				<th style="width:10%;">Quantity</th>
+				<th style="width:70%;">Description</th>
+				<th style="width:10%;">Unit Price</th>
+				<th style="width:10%;">Amount</th>
+			</tr>
+			</thead>
+			<!-- TABLE HEADER END -->
+			
+			
+			<!-- TABLE ITEMS -->
+			<tbody>
+			<tr class="item-row" rowspan="5" ng-repeat="item in items" data-id="{{item.id}}">
+				<td><input type="text" class="width-100" ng-model="item.qty"></td>
+				<td><input type="text" class="width-100" ng-model="item.description"></td>
+				<td style="min-width:80px;"><input type="text" class="fivesixth" ng-model="item.unit_price"></td>
+				<td style="min-width:90px;" ng-cloak>{{item.qty * item.unit_price | currency}}</td>
+			</tr>
+			</tbody>
+			<!-- TABLE FOOTER END -->
+
+
+			<!-- TABLE FOOTER -->
+			<tfoot>
+			<tr id="subtotal">
+				<td colspan="2" rowspan="{{fields.length+2}}">
+					<a href="" class="btn dontPrint" style="margin-left:6px;" ng-click="addItem()">Add Item</a>
+					<div class="addFields dontPrint">
+						<mark class="dontPrint" >Charges after the subtotal are applied in order</mark>
+						<a href="" class="btn" ng-click="addField()">Add Field</a>
+
+					</div>
+				</td>
+				<td class="spaced">Subtotal</td>
+				<td class="spaced" ng-cloak>{{subtotal | currency}}</td>
+			</tr>
+
+
+			<tr class="field-row" ng-repeat="field in fields">
+				<td><input type="text" ng-model="field.name"></td>
+				<td><input type="text" ng-model="field.value"></td>
+			</tr>
+
+			<tr>
+				<td class="spaced">Total</td>
+				<td class="spaced" ng-cloak>{{total | currency}}</td>
+			</tr>
+			</tfoot>
+			<!-- TABLE FOOTER END-->
+
+		</table>
+	</section>
+</section>
+
+
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.1/angular.min.js"></script>
+<script type="text/javascript" src="js/invoice.js"></script>
+
+</body>
+</html>
