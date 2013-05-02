@@ -65,7 +65,8 @@
       return $scope.fields.push({
         name: '',
         value: '',
-        symbol: ''
+        symbol: '',
+        css: 'dontPrint'
       });
     };
     $scope.addItem = function() {
@@ -98,7 +99,7 @@
       _ref = $scope.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
-        sum += item.qty * item.unit_price;
+        sum += parseFloat(item.qty * item.unit_price);
       }
       return sum;
     };
@@ -118,6 +119,11 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         field = _ref[_i];
         v = field.value;
+        if (v === '') {
+          field.css = 'dontPrint';
+        } else {
+          field.css = '';
+        }
         if (v[0] === "$" || v[0] === '€' || v[0] === '£') {
           _results.push(field.symbol = 'currency');
         } else if (v[v.length - 1] === "%") {
@@ -136,12 +142,14 @@
       _ref = $scope.fields;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         field = _ref[_i];
-        if (field.symbol === '%') {
-          t += t * parseFloat(field.value) / 100;
-        } else if (field.symbol === 'currency') {
-          t += parseFloat(field.value.substring(1));
-        } else {
-          t += parseFloat(field.value);
+        if (field.value !== '') {
+          if (field.symbol === '%') {
+            t += t * parseFloat(parseFloat(field.value)) / 100;
+          } else if (field.symbol === 'currency') {
+            t += parseFloat(field.value.substring(1));
+          } else {
+            t += parseFloat(field.value);
+          }
         }
       }
       return t;

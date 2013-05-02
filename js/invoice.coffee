@@ -36,7 +36,7 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 	
 
 	$scope.addField = ->
-			$scope.fields.push ({name: '', value: '',  symbol: ''})
+			$scope.fields.push ({name: '', value: '',  symbol: '', css:'dontPrint'})
 
 
 	$scope.addItem = ->
@@ -57,7 +57,7 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 	$scope.updateSubtotal = ->
 		sum = 0
 		for item in $scope.items
-			sum += (item.qty * item.unit_price)
+			sum += parseFloat(item.qty * item.unit_price)
 		return sum
 
 	$scope.subtotal = $scope.updateSubtotal()
@@ -73,7 +73,11 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 
 	$scope.parseFields = ->
 		for field in $scope.fields
-			v = field.value
+			v = field.value		
+			if v == ''
+				field.css = 'dontPrint'
+			else field.css = ''
+
 			if v[0] == "$" || v[0] == '€' || v[0] == '£'
 				field.symbol = 'currency'
 			else if v[v.length-1] == "%"
@@ -85,12 +89,13 @@ window.Invoice.controller 'InvoiceCtrl', ($scope) ->
 		t = $scope.subtotal
 		$scope.parseFields()
 		for field in $scope.fields
-			if field.symbol == '%'
-				t += (t * parseFloat(field.value)/100)
-			else if field.symbol == 'currency'
-				t += parseFloat(field.value.substring(1))
-			else
-				t += parseFloat(field.value)
+			if field.value != ''
+				if field.symbol == '%'
+					t += (t * parseFloat(parseFloat(field.value))/100)
+				else if field.symbol == 'currency'
+					t += parseFloat(field.value.substring(1))
+				else
+					t += parseFloat(field.value)
 		return t
 
 	$scope.total = $scope.updateTotal()
