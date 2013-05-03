@@ -4,9 +4,9 @@ InvoicingJs
 Client Side Invoicing
 
 
-##### How to
+### How to save:
 - Press `Control + P` or `Cmd + P` in Google Chrome to bring up the Print dialog.
 - Change destination to 'Save as PDF' to save the invoice.
 
-### Demo
+### Demo:
 http://vahek.github.io/InvoicingJs/
