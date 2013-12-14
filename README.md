@@ -9,4 +9,4 @@ Client Side Invoicing
 - Change destination to 'Save as PDF' to save the invoice.
 
 ### Demo:
-http://vahek.github.io/InvoicingJs/
+http://vahe.github.io/InvoicingJs/
